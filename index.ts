@@ -41,14 +41,6 @@ enum Tags {
   NAME = 'Name'
 }
 
-// const storagePrices: Map<string, DineroFactory.Dinero> = new Map([
-//   ['gp2', DineroFactory({ amount: 19, precision: 2 })],
-//   ['gp3', DineroFactory({ amount: 152, precision: 3 })],
-//   ['io1', DineroFactory({ amount: 238, precision: 3 })],
-//   ['st1', DineroFactory({ amount: 86, precision: 2 })],
-//   ['sc1', DineroFactory({ amount: 288, precision: 4 })],
-// ])
-
 const parsePricingInformation = (rawPricing: any): DineroFactory.Dinero => {
   const pricing = (rawPricing.PriceList || []).map((p: any) => JSON.parse(p.toString()));
 
