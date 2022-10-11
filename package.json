@@ -1,0 +1,28 @@
+{
+  "name": "i3r",
+  "version": "1.0.0",
+  "description": "Tool that helps identifying idle EC2 instances that are generating unnecesary cost",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node index.ts"
+  },
+  "author": "Renato Gama <renatoargh@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.183.0",
+    "@aws-sdk/client-cost-explorer": "^3.186.0",
+    "@aws-sdk/client-ec2": "^3.181.0",
+    "@aws-sdk/client-pricing": "^3.186.0",
+    "bytes": "^3.1.2",
+    "cli-table3": "^0.6.3",
+    "dinero.js": "^1.9.1",
+    "dotenv": "^16.0.3",
+    "luxon": "^3.0.4"
+  },
+  "devDependencies": {
+    "@types/bytes": "^3.1.1",
+    "@types/dinero.js": "^1.9.0",
+    "@types/luxon": "^3.0.1",
+    "@types/node": "^18.8.3"
+  }
+}
