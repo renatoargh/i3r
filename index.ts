@@ -247,7 +247,7 @@ const getLastMonthBill = async (): Promise<DineroFactory.Dinero> => {
 async function main() {  
   await getStoragePricing('gp2');
 
-  console.log('IDLE INSTANCE IDENTIFICATOR REPORT')
+  console.log('IDLE INSTANCE IDENTIFICATION REPORT')
   console.log('Report generation can take a few minutes, please wait...')
   console.log()
 
@@ -293,17 +293,19 @@ async function main() {
 
   instanceData.sort((a, b) => a.launchTime.valueOf() - b.launchTime.valueOf())
 
-  const table = new Table({ head: [
-    'LAUNCH DATE',
-    'NAME / INSTANCE ID',
-    'TYPE',
-    'INSTANCE COST',
-    'STORAGE',
-    'NETWORKING (IN/OUT)',
-    'TOTAL COST',
-    'USAGE (%)',
-    'IS WASTE',
-  ] })
+  const table = new Table({ 
+    head: [
+      'LAUNCH DATE',
+      'NAME / INSTANCE ID',
+      'TYPE',
+      'INSTANCE COST',
+      'STORAGE',
+      'NETWORKING (IN/OUT)',
+      'TOTAL COST',
+      'USAGE (%)',
+      'IS WASTE',
+    ] 
+  })
 
   instanceData.forEach((i) => {
     table.push([
@@ -324,14 +326,44 @@ async function main() {
 
   console.log()
   console.log(table.toString())
+  console.log()
   console.log(`DEFINITION OF "USAGE": Instance had more than ${CPU_USAGE_CRITERIA}% CPU usage for more than ${THREE_PER_CENT * 100}% of the time over the last week`)
   console.log(`DEFINITION OF "NETWORK": Average number of bytes in transit on a 10 minutes window for the last week`)
   console.log()
-  console.log(`TOTAL INSTANCE COUNT: ${instanceData.length} (Disregarding ${recentlyLaunchedInstanceCount} recently launched instances)`)
-  console.log(`CURRENT MONTHLY COST: ${totalMonthlyCost.toFormat()}`)
-  console.log(`CURRENT MONTHLY WASTE: ${totalMonthlyWaste.toFormat()} (${wastePercentage} of the last bill)`)
-  console.log(`LAST AWS BILL: ${lastAwsBill.toFormat()}`)
-  console.log()
+
+  const totalsTable = new Table()
+
+  totalsTable.push([
+    'TOTAL INSTANCE COUNT',
+    instanceData.length,
+    `Ignoring ${recentlyLaunchedInstanceCount} recently launched instances`,
+  ])
+
+  totalsTable.push([
+    'CURRENT EC2-ONLY MONTHLY COST',
+    totalMonthlyCost.toFormat(),
+    ''
+  ])
+
+  totalsTable.push([
+    'CURRENT EC2-ONLY MONTHLY WASTE',
+    totalMonthlyWaste.toFormat(),
+    `Represents ${wastePercentage} of the last bill`
+  ])
+
+  totalsTable.push([
+    'GLOBAL AWS COST (LAST MONTH)',
+    lastAwsBill.toFormat(),
+    ''
+  ])
+
+  totalsTable.push([
+    'POTENTIAL EC2-ONLY YEARLY WASTE',
+    totalMonthlyWaste.multiply(12).toFormat(),
+    ''
+  ])
+
+  console.log(totalsTable.toString())
 }
 
 main().catch((err) => console.log(`ERROR: ${err.message}`))
